@@ -1,6 +1,8 @@
 package cipher
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestCan_Shift_Letter_H(t *testing.T) {
 	caesarCipher := NewCaesarCipher()
@@ -79,5 +81,19 @@ func TestCan_Decrypt_A_Message_With_A_Custom_Shift_key(t *testing.T) {
 	cipherText := caesarCipher.Decrypt(word, 13)
 	if cipherText != expected {
 		t.Error("Expected "+expected+", got", cipherText)
+	}
+}
+
+func BenchmarkCaesarCipherEncrypt1000(b *testing.B) {
+	caesarCipher := NewCaesarCipher()
+	for n := 0; n < b.N; n++ {
+		caesarCipher.Encrypt("Hello world", 4)
+	}
+}
+
+func BenchmarkCaesarCipherDecrypt1000(b *testing.B) {
+	caesarCipher := NewCaesarCipher()
+	for n := 0; n < b.N; n++ {
+		caesarCipher.Decrypt("Lipps asvph", 4)
 	}
 }
