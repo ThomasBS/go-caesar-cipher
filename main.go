@@ -7,5 +7,6 @@ import (
 
 func main()  {
 	caesarCipher := cipher.NewCaesarCipher()
-	log.Println(caesarCipher.Encrypt("HELLO WORLD", 4))
+	log.Println(caesarCipher.Encrypt("Hello world", 4))
+	log.Println(caesarCipher.Decrypt("Lipps asvph", 4))
 }

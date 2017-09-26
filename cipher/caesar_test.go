@@ -41,3 +41,43 @@ func TestCan_Shift_With_A_Custom_Shift_key(t *testing.T) {
 		t.Error("Expected "+expected+", got", cipherText)
 	}
 }
+
+func TestCan_Decrypt_Character_With_A_Shift_Key_Of_4(t *testing.T) {
+	caesarCipher := NewCaesarCipher()
+	var word = "L"
+	var expected = "H"
+	cipherText := caesarCipher.Decrypt(word, 4)
+	if cipherText != expected {
+		t.Error("Expected "+expected+", got", cipherText)
+	}
+}
+
+func TestCan_Decrypt_Characters_With_A_Shift_Key_Of_4(t *testing.T) {
+	caesarCipher := NewCaesarCipher()
+	var word = "Lipps asvph"
+	var expected = "Hello world"
+	cipherText := caesarCipher.Decrypt(word, 4)
+	if cipherText != expected {
+		t.Error("Expected "+expected+", got", cipherText)
+	}
+}
+
+func TestCan_Decrypt_A_Uppercase_String_With_A_Shift_key_Of_4(t *testing.T) {
+	caesarCipher := NewCaesarCipher()
+	var word = "LIPPS ASVPH"
+	var expected = "HELLO WORLD"
+	cipherText := caesarCipher.Decrypt(word, 4)
+	if cipherText != expected {
+		t.Error("Expected "+expected+", got", cipherText)
+	}
+}
+
+func TestCan_Decrypt_A_Message_With_A_Custom_Shift_key(t *testing.T) {
+	caesarCipher := NewCaesarCipher()
+	var word = "URYYB JBEYQ"
+	var expected = "HELLO WORLD"
+	cipherText := caesarCipher.Decrypt(word, 13)
+	if cipherText != expected {
+		t.Error("Expected "+expected+", got", cipherText)
+	}
+}
