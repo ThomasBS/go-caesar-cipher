@@ -10,6 +10,7 @@ import (
 type CaesarCipherInterface interface {
 	Encrypt(str string, shiftKey int) string
 	Decrypt(str string, shiftKey int) string
+	Crack(str string) string
 }
 
 type caesarCipher struct {}
@@ -61,6 +62,28 @@ func (c *caesarCipher) Decrypt(str string, shiftKey int) string {
 	return cipherText.String()
 }
 
+func (c *caesarCipher) Crack(str string) string {
+	// The frequencies of letters appearing in the English language sorted from a-z
+	// http://crypto.interactive-maths.com/frequency-analysis-breaking-the-code.html
+	var charFrequencies = []float32{
+		.0820, .0150, .0280, .0430, .1270, .0220, .0200, .0610, .0700, .0015, .0080, .0400, .0240,
+		.0670, .0750, .0190, .0010, .0600, .0630, .0910, .0280, .0010, .0240, .0015, .0200, .0007,
+	}
+	var charSums [26]float32
+
+	// Find the frequency of all the letters in the message
+	for _, char := range str {
+		if char == 32 {
+			continue
+		}
+		var charPos = getCharPos(char)
+		// getCharPos is 1 indexed
+		charSums[charPos-1] += charFrequencies[charPos-1]
+	}
+
+	return "not implemented"
+}
+
 // getCharStr will return a character by specifying a position in the alphabet
 func getCharStr(alphabetPos int, asciiVal int32) string {
 	var isLowercase = asciiVal >= 97
@@ -70,14 +93,11 @@ func getCharStr(alphabetPos int, asciiVal int32) string {
 	return string('A' - 1 + alphabetPos)
 }
 
-// getCharPos will return the character's position in the alphabet based on its ascii value.
+// getCharPos will return the character's position in the alphabet
 func getCharPos(asciiVal int32) int {
-	var index int
-	var isUppercase = asciiVal < 97
-
-	if index = int(asciiVal) - 96; isUppercase {
-		index = int(asciiVal) - (64)
-	}
-
-	return index
+	// To convert a uppercase into lowercase and vice versa we simply set the 6'th bit
+	// The code below ensures that bit 32 is set using the bitwise OR operation
+	// This eliminates a if statement :)
+	asciiVal |= 32
+	return int(asciiVal) - 96
 }
